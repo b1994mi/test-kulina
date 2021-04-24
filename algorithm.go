@@ -21,6 +21,8 @@ func main() {
 	switch selection {
 	case 1:
 		sockMerchant()
+	case 2:
+		countingValleys()
 	case 3:
 		numberBreakdown()
 	}
@@ -91,6 +93,70 @@ func sockMerchant() {
 
 	// Length of slice indexOfSameEl is expected to be even.
 	println(len(indexOfSameEl) / 2)
+}
+
+func countingValleys() {
+	fmt.Println("input n: ")
+	var n int
+	fmt.Scanln(&n)
+	fmt.Println("input s: ")
+	s := make([]string, n)
+
+	// Use scanner and loop, otherwise it won't read space-separated token.
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		// Scan the text input and transform into slice of strings.
+		inputSlice := strings.Fields(scanner.Text())
+
+		// Simple handling if the number of space-separated input less than n.
+		if len(inputSlice) > n || len(inputSlice) < n {
+			println("invalid! input s:")
+			continue
+		}
+
+		// Check if input is string U or D.
+		isValid := true
+		for i, str := range inputSlice {
+			if str != "U" && str != "D" {
+				isValid = false
+			}
+			s[i] = str
+		}
+
+		// Handling if input is not U or D.
+		if !isValid {
+			println("invalid! input s:")
+			continue
+		}
+
+		// Put conditional just to remove warning.
+		if len(inputSlice) == n {
+			break
+		}
+	}
+
+	elevation, countValley, hasEnteredValley, hasExitedValley := 0, 0, false, false
+
+	for i := 0; i < n; i++ {
+		elevationBefore := elevation
+		if s[i] == "D" {
+			elevation--
+		} else {
+			elevation++
+		}
+		if elevationBefore == 0 && elevation < 0 {
+			hasEnteredValley = true
+		}
+		if elevationBefore < 0 && elevation == 0 {
+			hasExitedValley = true
+		}
+		if hasEnteredValley && hasExitedValley {
+			countValley++
+			hasEnteredValley, hasExitedValley = false, false
+		}
+	}
+
+	println(countValley)
 }
 
 func numberBreakdown() {
