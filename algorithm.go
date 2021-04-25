@@ -25,6 +25,8 @@ func main() {
 		countingValleys()
 	case 3:
 		numberBreakdown()
+	case 4:
+		andrewsTrip()
 	}
 }
 
@@ -172,4 +174,16 @@ func numberBreakdown() {
 		}
 		println()
 	}
+}
+
+func andrewsTrip() {
+	count := 0
+	for i := 1; i <= 100; i++ {
+		for j := 1; j <= 100; j++ {
+			if j%i == 0 {
+				count++
+			}
+		}
+	}
+	println(count, "lamps were turned on.")
 }
